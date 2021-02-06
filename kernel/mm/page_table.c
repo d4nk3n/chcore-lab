@@ -44,11 +44,15 @@ static int set_pte_flags(pte_t * entry, vmr_prop_t flags, int kind)
 {
 	if (flags & VMR_WRITE)
 		entry->l3_page.AP = AARCH64_PTE_AP_HIGH_RW_EL0_RW;
+	else if(kind == KERNEL_PTE)
+		entry->l3_page.AP = AARCH64_PTE_AP_HIGH_RW_EL0_NRW;
 	else
 		entry->l3_page.AP = AARCH64_PTE_AP_HIGH_RO_EL0_RO;
 
 	if (flags & VMR_EXEC)
 		entry->l3_page.UXN = AARCH64_PTE_UX;
+	else if(kind == KERNEL_PTE)
+		entry->l3_page.UXN = AARCH64_PTE_UXN;
 	else
 		entry->l3_page.UXN = AARCH64_PTE_UXN;
 
